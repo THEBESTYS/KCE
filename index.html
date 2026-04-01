@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>KEN | K-Culture EdTech Network</title>
+    <!-- Google Fonts & Tailwind -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <!-- Custom CSS Overrides -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fefcf8;
+            color: #1a1a1a;
+            scroll-behavior: smooth;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom gradient & glass effects */
+        .hero-gradient {
+            background: radial-gradient(circle at 70% 20%, rgba(245, 230, 220, 0.6), #fefcf8);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        .chapter-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
+        }
+        /* custom scroll */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b87333;
+            border-radius: 10px;
+        }
+        /* Admin panel hidden toggle */
+        .admin-only {
+            display: none;
+        }
+        .show-admin .admin-only {
+            display: block;
+        }
+        .btn-primary {
+            background: #b65f2e;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background: #8e451f;
+            transform: scale(0.98);
+        }
+        input, textarea, select {
+            border: 1px solid #e2e2e0;
+            border-radius: 16px;
+            padding: 10px 16px;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #b87333;
+            ring: 2px solid #b8733340;
+        }
+        .tab-active {
+            border-bottom: 2px solid #b87333;
+            color: #b87333;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-zinc-100/60 shadow-sm">
+        <div class="max-w-7xl mx-auto px-5 md:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-serif font-semibold tracking-tight text-stone-800">KEN<span class="text-amber-700">.</span></span>
+                <span class="hidden md:inline-block text-xs text-stone-400 tracking-wide ml-1">K-Culture EdTech Network</span>
+            </div>
+            <div class="flex items-center gap-5">
+                <a href="#home" class="text-sm font-medium text-stone-600 hover:text-amber-800 transition">홈</a>
+                <a href="#curriculum" class="text-sm font-medium text-stone-600 hover:text-amber-800 transition">커리큘럼</a>
+                <a href="#resources" class="text-sm font-medium text-stone-600 hover:text-amber-800 transition">강의자료</a>
+                <button id="loginBtn" class="text-sm font-semibold px-4 py-2 rounded-full bg-stone-900 text-white hover:bg-stone-700 transition shadow-sm">로그인</button>
+                <button id="adminToggleBtn" class="text-xs text-stone-400 border border-stone-200 px-2 py-1 rounded-full hover:bg-stone-100 hidden md:block">관리자</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-root" class="max-w-7xl mx-auto px-5 md:px-8 py-8 md:py-12">
+        <!-- Hero Section (public) -->
+        <section id="home" class="hero-gradient rounded-3xl p-6 md:p-12 mb-16 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="max-w-xl">
+                <div class="inline-flex items-center gap-2 bg-white/70 rounded-full px-3 py-1 text-xs font-medium text-amber-800 mb-4">
+                    <iconify-icon icon="solar:atom-bold" width="16"></iconify-icon>
+                    <span>K-EdTech 공식 커뮤니티</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight text-stone-900 leading-[1.2]">AI로 여는<br><span class="text-amber-700">K-에듀테크</span>의 미래</h1>
+                <p class="text-lg text-stone-500 mt-5 leading-relaxed">《AI로 여는 K-에듀테크》 전 23장의 완벽한 커리큘럼과 함께 글로벌 에듀테크 전문가로 성장하세요. KEN에서 강의자료, 영상, 커뮤니티를 한 곳에.</p>
+                <div class="flex flex-wrap gap-4 mt-8">
+                    <button class="bg-amber-800 text-white px-6 py-3 rounded-full font-medium shadow-md hover:bg-amber-900 transition">📘 강의 둘러보기</button>
+                    <button class="border border-stone-300 bg-white/60 px-6 py-3 rounded-full font-medium hover:bg-stone-100 transition">🎬 유튜브 프리뷰</button>
+                </div>
+            </div>
+            <div class="w-full max-w-sm md:max-w-md">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format" alt="K-Culture EdTech" class="rounded-2xl shadow-2xl object-cover w-full h-auto">
+            </div>
+        </section>
+
+        <!-- About Books + Video Highlights -->
+        <section class="grid md:grid-cols-2 gap-10 mb-20">
+            <div class="bg-stone-50 rounded-2xl p-7 border border-stone-100">
+                <div class="flex items-center gap-2 text-amber-700 mb-3"><iconify-icon icon="solar:book-bold" width="28"></iconify-icon><span class="font-bold text-xl">AI로 여는 K-에듀테크</span></div>
+                <p class="text-stone-600 leading-relaxed">전 23장 구성 (Vol.1~3) — 기초 이론, AI 영상/이미지 생성, 데이터 분석, 글로벌 전략까지. K-컬처와 에듀테크의 완벽한 융합을 위한 유일무이한 커리큘럼.</p>
+                <div class="mt-4 flex gap-3 text-sm">
+                    <span class="bg-white px-3 py-1 rounded-full shadow-sm">📖 ISBN 979-11-XXXXX-01-0</span>
+                    <span class="bg-white px-3 py-1 rounded-full shadow-sm">🌐 KEN 공식 교재</span>
+                </div>
+            </div>
+            <div class="bg-gradient-to-br from-amber-50 to-stone-50 rounded-2xl p-7 border border-stone-100">
+                <div class="flex items-center gap-2 mb-3"><iconify-icon icon="solar:play-circle-bold" width="28" class="text-amber-700"></iconify-icon><span class="font-bold text-xl">홍보 영상</span></div>
+                <div class="aspect-video w-full bg-black/5 rounded-xl flex items-center justify-center relative overflow-hidden group cursor-pointer">
+                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition" alt="video thumbnail">
+                    <div class="absolute inset-0 flex items-center justify-center"><iconify-icon icon="solar:play-bold" width="48" class="text-white drop-shadow-lg"></iconify-icon></div>
+                </div>
+                <p class="text-xs text-stone-400 mt-2">* K-에듀테크 소개영상 (5분) | 유튜브 채널 바로가기</p>
+            </div>
+        </section>
+
+        <!-- Curriculum section (23 chapters overview) -->
+        <section id="curriculum" class="mb-20">
+            <div class="flex justify-between items-end border-b border-stone-200 pb-3 mb-8">
+                <h2 class="text-3xl font-serif font-medium tracking-tight">📚 23챕터 로드맵</h2>
+                <a href="#" class="text-sm text-amber-700 hover:underline">전체 강의 보기 →</a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 챕터 리스트 (1-23) 동적 생성 예시이지만 하드코딩 6개로 보여주고 더보기 가능 -->
+                <!-- 실제로는 각 chapter 카드가 링크/자료로 연결됨 -->
+                <div class="bg-white rounded-xl border border-stone-100 p-5 chapter-card shadow-sm">
+                    <div class="text-amber-700 font-bold text-sm">Vol.1 · Chapter 1-8</div>
+                    <h3 class="text-xl font-semibold mt-1">에듀테크 기초 & 생성형 AI</h3>
+                    <p class="text-stone-500 text-sm mt-2">교육 4.0, 프롬프트 엔지니어링, K-문화 콘텐츠 생성 기초</p>
+                    <div class="mt-3 flex gap-3 text-xs text-stone-400"><span>📄 PPT 8개</span><span>🎬 영상 6개</span><span>📁 자료 ZIP</span></div>
+                </div>
+                <div class="bg-white rounded-xl border border-stone-100 p-5 chapter-card shadow-sm">
+                    <div class="text-amber-700 font-bold text-sm">Vol.2 · Chapter 9-15</div>
+                    <h3 class="text-xl font-semibold mt-1">고도화 & 데이터 분석</h3>
+                    <p class="text-stone-500 text-sm mt-2">학습자 데이터, Kirkpatrick 모델, AI 예측, GitHub 포트폴리오</p>
+                    <div class="mt-3 flex gap-3 text-xs text-stone-400"><span>📄 PPT 7개</span><span>🎬 영상 8개</span><span>📊 실습파일</span></div>
+                </div>
+                <div class="bg-white rounded-xl border border-stone-100 p-5 chapter-card shadow-sm">
+                    <div class="text-amber-700 font-bold text-sm">Vol.3 · Chapter 16-23</div>
+                    <h3 class="text-xl font-semibold mt-1">한국어 교육 & 글로벌 전략</h3>
+                    <p class="text-stone-500 text-sm mt-2">AI 음성/발음, 패들렛 마스터, 글로벌 진출, 영어교육 비교</p>
+                    <div class="mt-3 flex gap-3 text-xs text-stone-400"><span>📄 PPT 8개</span><span>🎬 영상 10개</span><span>🌏 현지화 가이드</span></div>
+                </div>
+                <!-- 반복하여 23개 챕터를 요약했지만 이후 "전체 자료실"에서 상세보기 -->
+            </div>
+            <div class="mt-8 text-center"><button class="text-amber-800 font-medium underline">+ 23개 챕터 전체 상세보기</button></div>
+        </section>
+
+        <!-- Resource Hub: 강의 자료 & 영상 (회원 전용 영역 느낌, 로그인 전엔 락) -->
+        <section id="resources" class="mb-20">
+            <div class="flex items-center justify-between border-b border-stone-200 pb-3 mb-6">
+                <h2 class="text-3xl font-serif font-medium">📁 강의 자료실 & 미디어</h2>
+                <span id="loginStatusBadge" class="text-xs bg-stone-100 px-3 py-1 rounded-full">🔒 회원전용</span>
+            </div>
+            <!-- 로그인 전 안내 메시지 -->
+            <div id="guestMessage" class="bg-amber-50/50 rounded-xl p-6 text-center border border-amber-100 mb-8">
+                <iconify-icon icon="solar:lock-password-bold" width="32" class="text-amber-600 mx-auto"></iconify-icon>
+                <p class="mt-2 font-medium">강의 자료(PPT, 이미지, 문서)와 5분 강의 영상은 회원가입 후 열람 가능합니다.</p>
+                <button id="openRegisterBtn" class="mt-3 bg-amber-800 text-white px-5 py-2 rounded-full text-sm">지금 가입하기</button>
+            </div>
+            <!-- Chapter 자료 그리드 (로그인 시 보임) -->
+            <div id="memberContent" class="hidden">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Chapter 1 예시 -->
+                    <div class="border rounded-xl overflow-hidden bg-white shadow-sm">
+                        <div class="bg-stone-50 px-5 py-3 border-b flex justify-between items-center"><span class="font-bold">Chapter 1. 에듀테크 지평</span><span class="text-xs text-amber-700">📄 PPT | 🎬 영상</span></div>
+                        <div class="p-4 flex flex-col gap-2">
+                            <div class="flex items-center gap-2"><iconify-icon icon="solar:presentation-graph-bold" width="20"></iconify-icon><a href="#" class="text-amber-800 text-sm hover:underline">[PPT] 교육 1.0 → 4.0 패러다임.pdf</a></div>
+                            <div class="flex items-center gap-2"><iconify-icon icon="solar:play-circle-bold" width="20"></iconify-icon><a href="#" class="text-amber-800 text-sm hover:underline">[영상] K-에듀테크 5분 인사이트 (MP4)</a></div>
+                            <div class="flex items-center gap-2"><iconify-icon icon="solar:document-bold" width="20"></iconify-icon><a href="#" class="text-amber-800 text-sm hover:underline">워크북_Chapter1_활동지.pdf</a></div>
+                        </div>
+                    </div>
+                    <div class="border rounded-xl overflow-hidden bg-white shadow-sm">
+                        <div class="bg-stone-50 px-5 py-3 border-b flex justify-between"><span class="font-bold">Chapter 5. AI 이미지 생성</span><span class="text-xs text-amber-700">📸 DALL·E 실습</span></div>
+                        <div class="p-4 flex flex-col gap-2"><div class="flex items-center gap-2"><iconify-icon icon="solar:gallery-bold" width="20"></iconify-icon><a href="#" class="text-amber-800">프롬프트 템플릿 30종.pdf</a></div><div class="flex items-center gap-2"><iconify-icon icon="solar:play-circle-bold" width="20"></iconify-icon><a href="#" class="text-amber-800">[실전영상] 한복 이미지 생성 워크플로우</a></div></div>
+                    </div>
+                    <div class="border rounded-xl overflow-hidden bg-white shadow-sm">
+                        <div class="bg-stone-50 px-5 py-3 border-b"><span class="font-bold">Chapter 12. 종합 프로젝트</span></div>
+                        <div class="p-4"><a href="#" class="flex gap-2"><iconify-icon icon="solar:presentation-graph-bold" width="20"></iconify-icon> 프로젝트 제안서 템플릿.pptx</a><a href="#" class="flex gap-2 mt-2"><iconify-icon icon="solar:video-library-bold" width="20"></iconify-icon> 데모데이 시연 영상 (15분)</a></div>
+                    </div>
+                    <div class="border rounded-xl overflow-hidden bg-white shadow-sm">
+                        <div class="bg-stone-50 px-5 py-3 border-b"><span class="font-bold">Chapter 21. AI 발음 코칭</span></div>
+                        <div class="p-4"><a href="#" class="flex gap-2"><iconify-icon icon="solar:microphone-bold" width="20"></iconify-icon> [음성파일] TTS 실습예제.zip</a><a href="#" class="flex gap-2 mt-2"><iconify-icon icon="solar:play-circle-bold" width="20"></iconify-icon> 발음교정 AI 활용법 영상</a></div>
+                    </div>
+                </div>
+                <div class="mt-8 text-center text-stone-400 text-sm">※ 총 23개 챕터의 모든 강의자료(PPT, 이미지, 영상)는 로그인 후 다운로드 가능합니다.</div>
+            </div>
+        </section>
+
+        <!-- 회원가입 & 로그인 모달 (간단 팝업) -->
+        <div id="authModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-all">
+            <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+                <button id="closeModal" class="absolute top-4 right-4 text-stone-400 hover:text-stone-800"><iconify-icon icon="solar:close-circle-bold" width="24"></iconify-icon></button>
+                <div class="text-center mb-4"><span class="text-2xl font-serif">KEN</span><span class="text-amber-700">.</span></div>
+                <div class="flex gap-4 border-b mb-4">
+                    <button id="tabLogin" class="pb-2 flex-1 text-center font-medium tab-active">로그인</button>
+                    <button id="tabRegister" class="pb-2 flex-1 text-center text-stone-500">회원가입</button>
+                </div>
+                <!-- 로그인 폼 -->
+                <div id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="이메일" class="mb-3">
+                    <input type="password" id="loginPassword" placeholder="비밀번호" class="mb-4">
+                    <button id="doLogin" class="w-full bg-stone-900 text-white py-2 rounded-full">로그인</button>
+                    <p class="text-xs text-center text-stone-400 mt-3">demo@ken.com / 1234 (테스트 계정)</p>
+                </div>
+                <!-- 회원가입 폼 -->
+                <div id="registerForm" class="hidden">
+                    <input type="text" id="regName" placeholder="이름" class="mb-2">
+                    <input type="email" id="regEmail" placeholder="이메일" class="mb-2">
+                    <input type="password" id="regPw" placeholder="비밀번호" class="mb-4">
+                    <button id="doRegister" class="w-full bg-amber-800 text-white py-2 rounded-full">회원가입</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 관리자 패널 (숨김, adminToggle) -->
+        <div id="adminPanel" class="mt-12 pt-8 border-t border-stone-200 hidden">
+            <h3 class="text-xl font-bold">🔧 관리자 대시보드</h3>
+            <p class="text-stone-500 mb-3">회원 관리 및 강의자료 업로드 (데모 기능)</p>
+            <div class="bg-stone-50 rounded-xl p-4">
+                <div class="font-mono text-sm">📋 회원 목록 (localStorage)</div>
+                <ul id="userList" class="mt-2 text-sm space-y-1"></ul>
+                <div class="mt-4"><button id="clearAllUsers" class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">모든 회원 초기화</button></div>
+            </div>
+            <div class="mt-6">
+                <p class="font-medium">📤 새 강의자료 업로드 (링크 데모)</p>
+                <div class="flex gap-2 mt-2"><input type="text" id="resourceTitle" placeholder="자료명" class="text-sm"><input type="text" id="resourceLink" placeholder="파일 URL" class="text-sm"><button id="addResourceBtn" class="bg-stone-800 text-white px-4 rounded-full text-sm">추가</button></div>
+                <p class="text-xs text-stone-400 mt-2">※ 실제 파일 업로드는 구현되지 않았으나 관리자용 확장 예시입니다.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-stone-50 border-t border-stone-100 py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-5 md:px-8 text-center text-stone-500 text-sm">
+            <p class="font-serif text-xl mb-2">K-Culture EdTech Network</p>
+            <p>《AI로 여는 K-에듀테크》 공식 홈페이지 | KEN 커뮤니티 | 문의: ken@kedutech.kr</p>
+            <div class="flex justify-center gap-6 mt-4"><span>📘 Instagram</span><span>🎬 YouTube</span><span>💬 카카오톡 오픈채팅</span></div>
+            <p class="text-xs mt-5">© 2026 K-EdTech Project. 모든 콘텐츠는 교육 목적으로 제공됩니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ---------- KEN Site Full Logic (회원/관리자/자료) ----------
+        let currentUser = null;
+        // localStorage users
+        let users = JSON.parse(localStorage.getItem('ken_users')) || [];
+        if(users.length === 0) {
+            users.push({ name: 'Demo Teacher', email: 'demo@ken.com', password: '1234', role: 'admin' });
+            localStorage.setItem('ken_users', JSON.stringify(users));
+        }
+
+        // UI 요소
+        const guestMsgDiv = document.getElementById('guestMessage');
+        const memberContent = document.getElementById('memberContent');
+        const loginStatusBadge = document.getElementById('loginStatusBadge');
+        const authModal = document.getElementById('authModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const adminToggle = document.getElementById('adminToggleBtn');
+        const adminPanelDiv = document.getElementById('adminPanel');
+
+        function updateUI() {
+            const storedUser = localStorage.getItem('ken_current_user');
+            if(storedUser) {
+                currentUser = JSON.parse(storedUser);
+                guestMsgDiv.classList.add('hidden');
+                memberContent.classList.remove('hidden');
+                loginStatusBadge.innerHTML = `👤 ${currentUser.name}님 환영합니다`;
+                loginBtn.innerText = '로그아웃';
+            } else {
+                currentUser = null;
+                guestMsgDiv.classList.remove('hidden');
+                memberContent.classList.add('hidden');
+                loginStatusBadge.innerHTML = '🔒 회원전용';
+                loginBtn.innerText = '로그인';
+                adminPanelDiv.classList.add('hidden');
+                document.body.classList.remove('show-admin');
+            }
+            // 관리자 버튼 표시 (admin만 보이게)
+            if(currentUser && currentUser.email === 'demo@ken.com') {
+                adminToggle.classList.remove('hidden');
+            } else {
+                adminToggle.classList.add('hidden');
+                adminPanelDiv.classList.add('hidden');
+            }
+        }
+
+        function saveCurrentUser(user) {
+            localStorage.setItem('ken_current_user', JSON.stringify(user));
+            updateUI();
+        }
+        function logout() {
+            localStorage.removeItem('ken_current_user');
+            updateUI();
+        }
+
+        // 로그인 핸들러
+        document.getElementById('doLogin')?.addEventListener('click', () => {
+            const email = document.getElementById('loginEmail').value;
+            const pw = document.getElementById('loginPassword').value;
+            const found = users.find(u => u.email === email && u.password === pw);
+            if(found) {
+                saveCurrentUser({ name: found.name, email: found.email, role: found.role || 'member' });
+                authModal.classList.add('hidden');
+            } else {
+                alert('이메일/비밀번호가 일치하지 않습니다.');
+            }
+        });
+        document.getElementById('doRegister')?.addEventListener('click', () => {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const pw = document.getElementById('regPw').value;
+            if(!name || !email || !pw) return alert('모두 입력해주세요');
+            if(users.find(u=>u.email === email)) return alert('이미 존재하는 이메일');
+            const newUser = { name, email, password: pw, role: 'member' };
+            users.push(newUser);
+            localStorage.setItem('ken_users', JSON.stringify(users));
+            alert('회원가입 완료! 로그인 해주세요.');
+            document.getElementById('tabLogin').click();
+        });
+        // 탭 전환
+        const loginFormDiv = document.getElementById('loginForm');
+        const registerFormDiv = document.getElementById('registerForm');
+        const tabLogin = document.getElementById('tabLogin');
+        const tabRegister = document.getElementById('tabRegister');
+        tabLogin.onclick = () => { loginFormDiv.classList.remove('hidden'); registerFormDiv.classList.add('hidden'); tabLogin.classList.add('tab-active'); tabRegister.classList.remove('tab-active'); };
+        tabRegister.onclick = () => { loginFormDiv.classList.add('hidden'); registerFormDiv.classList.remove('hidden'); tabRegister.classList.add('tab-active'); tabLogin.classList.remove('tab-active'); };
+
+        loginBtn.onclick = () => {
+            if(currentUser) logout();
+            else authModal.classList.remove('hidden');
+        };
+        document.getElementById('closeModal').onclick = () => authModal.classList.add('hidden');
+        document.getElementById('openRegisterBtn').onclick = () => { authModal.classList.remove('hidden'); tabRegister.click(); };
+
+        // 관리자 토글
+        let adminVisible = false;
+        adminToggle.onclick = () => {
+            if(currentUser?.email !== 'demo@ken.com') return alert('관리자만 접근 가능');
+            adminVisible = !adminVisible;
+            if(adminVisible) {
+                adminPanelDiv.classList.remove('hidden');
+                renderUserList();
+            } else adminPanelDiv.classList.add('hidden');
+        };
+        function renderUserList() {
+            const listDiv = document.getElementById('userList');
+            if(!listDiv) return;
+            listDiv.innerHTML = users.map(u => `<li>📧 ${u.email} (${u.name}) ${u.role === 'admin' ? '⭐관리자' : '일반회원'}</li>`).join('');
+        }
+        document.getElementById('clearAllUsers')?.addEventListener('click', () => {
+            if(confirm('모든 회원을 초기화 (관리자만 유지)?')) {
+                const adminUser = users.find(u => u.email === 'demo@ken.com');
+                users = adminUser ? [adminUser] : [];
+                localStorage.setItem('ken_users', JSON.stringify(users));
+                if(currentUser && currentUser.email !== 'demo@ken.com') logout();
+                renderUserList();
+                alert('초기화 완료');
+            }
+        });
+        // 자료 추가 데모
+        document.getElementById('addResourceBtn')?.addEventListener('click', () => {
+            const title = document.getElementById('resourceTitle').value;
+            const link = document.getElementById('resourceLink').value;
+            if(title && link) alert(`[관리자 시뮬레이션] "${title}" 자료가 추가되었습니다. (실제 DB연동은 없음)`);
+            else alert('자료명과 링크를 입력하세요');
+        });
+        // 초기화
+        updateUI();
+    </script>
+</body>
+</html>
