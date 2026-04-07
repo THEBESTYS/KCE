@@ -22,8 +22,10 @@
         .tab-active { border-bottom: 2px solid #b87333; color: #b87333; font-weight: 600; }
         .video-link { color: #b87333; text-decoration: none; transition: all 0.2s; }
         .video-link:hover { text-decoration: underline; color: #8e451f; }
-        .approve-btn { background-color: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 0 4px; cursor: pointer; }
-        .reject-btn { background-color: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 0 4px; cursor: pointer; }
+        .approve-btn { background-color: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 0 4px; cursor: pointer; border: none; }
+        .reject-btn { background-color: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 0 4px; cursor: pointer; border: none; }
+        .approve-btn:hover { background-color: #059669; }
+        .reject-btn:hover { background-color: #dc2626; }
     </style>
 </head>
 <body class="antialiased">
@@ -40,7 +42,7 @@
                 <a href="#curriculum" class="text-sm font-medium text-stone-600 hover:text-amber-800 transition">커리큘럼</a>
                 <a href="#resources" class="text-sm font-medium text-stone-600 hover:text-amber-800 transition">강의자료</a>
                 <button id="loginBtn" class="text-sm font-semibold px-4 py-2 rounded-full bg-stone-900 text-white hover:bg-stone-700 transition shadow-sm">로그인</button>
-                <button id="adminToggleBtn" class="text-xs text-stone-400 border border-stone-200 px-2 py-1 rounded-full hover:bg-stone-100 hidden md:block">관리자</button>
+                <button id="adminToggleBtn" class="text-xs text-stone-400 border border-stone-200 px-2 py-1 rounded-full hover:bg-stone-100 hidden">관리자</button>
             </div>
         </div>
     </header>
@@ -206,16 +208,25 @@
         let users = JSON.parse(localStorage.getItem('ken_users')) || [];
         
         // 초기 관리자 설정 (one@naver.com / pass1234)
-        if(users.length === 0) {
-            users.push({ name: '관리자', email: 'one@naver.com', password: 'pass1234', role: 'admin', status: 'approved' });
+        const ADMIN_EMAIL = "one@naver.com";
+        const ADMIN_PASSWORD = "pass1234";
+        
+        // 관리자 계정 확인 및 설정
+        const existingAdmin = users.find(u => u.email === ADMIN_EMAIL);
+        if(!existingAdmin) {
+            users.push({ 
+                name: '관리자', 
+                email: ADMIN_EMAIL, 
+                password: ADMIN_PASSWORD, 
+                role: 'admin', 
+                status: 'approved' 
+            });
             localStorage.setItem('ken_users', JSON.stringify(users));
-        } else {
-            // 기존 데이터에 관리자가 없으면 추가
-            const existingAdmin = users.find(u => u.role === 'admin');
-            if(!existingAdmin) {
-                users.push({ name: '관리자', email: 'one@naver.com', password: 'pass1234', role: 'admin', status: 'approved' });
-                localStorage.setItem('ken_users', JSON.stringify(users));
-            }
+        } else if(existingAdmin.role !== 'admin') {
+            // 기존에 같은 이메일이 있지만 admin이 아닌 경우 업데이트
+            existingAdmin.role = 'admin';
+            existingAdmin.status = 'approved';
+            localStorage.setItem('ken_users', JSON.stringify(users));
         }
 
         // UI 요소
@@ -348,31 +359,45 @@
         // UI 업데이트
         function updateUI() {
             const storedUser = localStorage.getItem('ken_current_user');
+            console.log('Stored user:', storedUser); // 디버깅용
+            
             if(storedUser) {
                 currentUser = JSON.parse(storedUser);
+                console.log('Current user role:', currentUser.role); // 디버깅용
+                
                 const dbUser = users.find(u => u.email === currentUser.email);
                 if(!dbUser || (dbUser.status !== 'approved' && dbUser.role !== 'admin')) {
                     logout();
                     alert('관리자가 아직 회원가입을 승인하지 않았습니다.');
                     return;
                 }
+                
+                // currentUser에 role이 없으면 dbUser에서 가져오기
+                if(!currentUser.role && dbUser) {
+                    currentUser.role = dbUser.role;
+                    localStorage.setItem('ken_current_user', JSON.stringify(currentUser));
+                }
+                
                 guestMsgDiv.classList.add('hidden');
                 memberContent.classList.remove('hidden');
                 loginStatusBadge.innerHTML = `👤 ${currentUser.name}님 환영합니다`;
                 loginBtn.innerText = '로그아웃';
                 renderVideoList();
+                
+                // 관리자 버튼 표시 조건: role이 admin인 경우
+                if(currentUser.role === 'admin') {
+                    adminToggle.classList.remove('hidden');
+                    console.log('Admin button should be visible'); // 디버깅용
+                } else {
+                    adminToggle.classList.add('hidden');
+                    adminPanelDiv.classList.add('hidden');
+                }
             } else {
                 currentUser = null;
                 guestMsgDiv.classList.remove('hidden');
                 memberContent.classList.add('hidden');
                 loginStatusBadge.innerHTML = '🔒 회원전용';
                 loginBtn.innerText = '로그인';
-                adminPanelDiv.classList.add('hidden');
-            }
-            
-            if(currentUser && currentUser.email === 'one@naver.com') {
-                adminToggle.classList.remove('hidden');
-            } else {
                 adminToggle.classList.add('hidden');
                 adminPanelDiv.classList.add('hidden');
             }
@@ -393,13 +418,24 @@
             const email = document.getElementById('loginEmail').value;
             const pw = document.getElementById('loginPassword').value;
             const found = users.find(u => u.email === email && u.password === pw);
+            
             if(found) {
                 if(found.status !== 'approved' && found.role !== 'admin') {
                     alert('관리자가 승인하지 않은 회원입니다. 관리자에게 문의하세요.');
                     return;
                 }
-                saveCurrentUser({ name: found.name, email: found.email, role: found.role });
+                // role 정보를 명확히 저장
+                const userToSave = { 
+                    name: found.name, 
+                    email: found.email, 
+                    role: found.role,
+                    status: found.status
+                };
+                saveCurrentUser(userToSave);
                 authModal.classList.add('hidden');
+                // 입력창 초기화
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
             } else {
                 alert('이메일/비밀번호가 일치하지 않습니다.');
             }
@@ -439,23 +475,37 @@
         document.getElementById('closeModal')?.addEventListener('click', () => authModal.classList.add('hidden'));
         document.getElementById('openRegisterBtn')?.addEventListener('click', () => { authModal.classList.remove('hidden'); if(tabRegister) tabRegister.click(); });
 
-        // 관리자 토글
+        // 관리자 토글 (관리자 버튼 클릭 시)
         let adminVisible = false;
         adminToggle.onclick = () => {
-            if(currentUser?.email !== 'one@naver.com') return alert('관리자만 접근 가능');
+            console.log('Admin toggle clicked, currentUser:', currentUser); // 디버깅용
+            console.log('Current user role:', currentUser?.role); // 디버깅용
+            
+            if(!currentUser) {
+                alert('로그인이 필요합니다.');
+                return;
+            }
+            
+            if(currentUser.role !== 'admin') {
+                alert('관리자만 접근 가능합니다.');
+                return;
+            }
+            
             adminVisible = !adminVisible;
             if(adminVisible) {
                 adminPanelDiv.classList.remove('hidden');
                 renderUserLists();
-            } else adminPanelDiv.classList.add('hidden');
+            } else {
+                adminPanelDiv.classList.add('hidden');
+            }
         };
         
         document.getElementById('clearAllUsers')?.addEventListener('click', () => {
             if(confirm('모든 일반 회원을 초기화하고 관리자만 유지하시겠습니까?')) {
-                const adminUser = users.find(u => u.email === 'one@naver.com');
+                const adminUser = users.find(u => u.email === ADMIN_EMAIL);
                 users = adminUser ? [{ ...adminUser, status: 'approved' }] : [];
                 localStorage.setItem('ken_users', JSON.stringify(users));
-                if(currentUser && currentUser.email !== 'one@naver.com') logout();
+                if(currentUser && currentUser.email !== ADMIN_EMAIL) logout();
                 renderUserLists();
                 alert('초기화 완료');
             }
