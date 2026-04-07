@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background-color: #fefcf8; color: #1a1a1a; scroll-behavior: smooth; }
@@ -26,11 +28,15 @@
         .reject-btn { background-color: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 0 4px; cursor: pointer; border: none; }
         .approve-btn:hover { background-color: #059669; }
         .reject-btn:hover { background-color: #dc2626; }
+        video { width: 100%; border-radius: 12px; background: #000; }
+        .ppt-download { background-color: #3b82f6; color: white; padding: 8px 16px; border-radius: 24px; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; }
+        .ppt-download:hover { background-color: #2563eb; }
+        .grade-gold { background-color: #fbbf24; color: #78350f; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .grade-diamond { background-color: #8b5cf6; color: white; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Navigation -->
     <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-zinc-100/60 shadow-sm">
         <div class="max-w-7xl mx-auto px-5 md:px-8 py-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -47,8 +53,7 @@
         </div>
     </header>
 
-    <main id="app-root" class="max-w-7xl mx-auto px-5 md:px-8 py-8 md:py-12">
-        <!-- Hero Section -->
+    <main class="max-w-7xl mx-auto px-5 md:px-8 py-8 md:py-12">
         <section id="home" class="hero-gradient rounded-3xl p-6 md:p-12 mb-16 flex flex-col md:flex-row items-center justify-between gap-8">
             <div class="max-w-xl">
                 <div class="inline-flex items-center gap-2 bg-white/70 rounded-full px-3 py-1 text-xs font-medium text-amber-800 mb-4">
@@ -56,10 +61,9 @@
                     <span>K-EdTech 공식 커뮤니티</span>
                 </div>
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight text-stone-900 leading-[1.2]">AI로 여는<br><span class="text-amber-700">K-에듀테크</span>의 미래</h1>
-                <p class="text-lg text-stone-500 mt-5 leading-relaxed">《AI로 여는 K-에듀테크》 전 23장의 완벽한 커리큘럼과 함께 글로벌 에듀테크 전문가로 성장하세요. KEN에서 강의 영상을 한 곳에.</p>
+                <p class="text-lg text-stone-500 mt-5 leading-relaxed">《AI로 여는 K-에듀테크》 전 23장의 완벽한 커리큘럼. 골드/다이아몬드 회원제로 더 풍성한 학습 경험을 제공합니다.</p>
                 <div class="flex flex-wrap gap-4 mt-8">
                     <button onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'})" class="bg-amber-800 text-white px-6 py-3 rounded-full font-medium shadow-md hover:bg-amber-900 transition">📘 강의 둘러보기</button>
-                    <button class="border border-stone-300 bg-white/60 px-6 py-3 rounded-full font-medium hover:bg-stone-100 transition">🎬 유튜브 프리뷰</button>
                 </div>
             </div>
             <div class="w-full max-w-sm md:max-w-md">
@@ -67,62 +71,32 @@
             </div>
         </section>
 
-        <!-- About Books -->
-        <section class="grid md:grid-cols-2 gap-10 mb-20">
-            <div class="bg-stone-50 rounded-2xl p-7 border border-stone-100">
-                <div class="flex items-center gap-2 text-amber-700 mb-3"><iconify-icon icon="solar:book-bold" width="28"></iconify-icon><span class="font-bold text-xl">AI로 여는 K-에듀테크</span></div>
-                <p class="text-stone-600 leading-relaxed">전 23장 구성 (Vol.1~3) — 기초 이론, AI 영상/이미지 생성, 데이터 분석, 글로벌 전략까지. K-컬처와 에듀테크의 완벽한 융합을 위한 유일무이한 커리큘럼.</p>
-                <div class="mt-4 flex gap-3 text-sm">
-                    <span class="bg-white px-3 py-1 rounded-full shadow-sm">📖 ISBN 979-11-XXXXX-01-0</span>
-                    <span class="bg-white px-3 py-1 rounded-full shadow-sm">🌐 KEN 공식 교재</span>
-                </div>
-            </div>
-            <div class="bg-gradient-to-br from-amber-50 to-stone-50 rounded-2xl p-7 border border-stone-100">
-                <div class="flex items-center gap-2 mb-3"><iconify-icon icon="solar:play-circle-bold" width="28" class="text-amber-700"></iconify-icon><span class="font-bold text-xl">홍보 영상</span></div>
-                <div class="aspect-video w-full bg-black/5 rounded-xl flex items-center justify-center relative overflow-hidden group cursor-pointer">
-                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition" alt="video thumbnail">
-                    <div class="absolute inset-0 flex items-center justify-center"><iconify-icon icon="solar:play-bold" width="48" class="text-white drop-shadow-lg"></iconify-icon></div>
-                </div>
-                <p class="text-xs text-stone-400 mt-2">* K-에듀테크 소개영상 (5분) | 유튜브 채널 바로가기</p>
-            </div>
-        </section>
-
-        <!-- Curriculum section (23 chapters overview) -->
         <section id="curriculum" class="mb-20">
             <div class="flex justify-between items-end border-b border-stone-200 pb-3 mb-8">
                 <h2 class="text-3xl font-serif font-medium tracking-tight">📚 23챕터 로드맵</h2>
-                <a href="#resources" class="text-sm text-amber-700 hover:underline">강의 자료실 바로가기 →</a>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="chapterOverview">
-                <!-- 동적으로 생성 -->
-            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="chapterOverview"></div>
         </section>
 
-        <!-- Resource Hub: 강의 영상 (회원 전용) -->
         <section id="resources" class="mb-20">
             <div class="flex items-center justify-between border-b border-stone-200 pb-3 mb-6">
                 <h2 class="text-3xl font-serif font-medium">📁 강의 자료실 & 미디어</h2>
                 <span id="loginStatusBadge" class="text-xs bg-stone-100 px-3 py-1 rounded-full">🔒 회원전용</span>
             </div>
-            
-            <!-- 비회원 안내 -->
             <div id="guestMessage" class="bg-amber-50/50 rounded-xl p-6 text-center border border-amber-100 mb-8">
                 <iconify-icon icon="solar:lock-password-bold" width="32" class="text-amber-600 mx-auto"></iconify-icon>
                 <p class="mt-2 font-medium">강의 영상은 회원가입 후 열람 가능합니다.</p>
                 <p class="text-sm text-stone-500 mt-1">※ 관리자 승인 후 이용 가능합니다.</p>
                 <button id="openRegisterBtn" class="mt-3 bg-amber-800 text-white px-5 py-2 rounded-full text-sm">지금 가입하기</button>
             </div>
-
-            <!-- 회원 전용 콘텐츠 - 23개 챕터 전부 표시 -->
             <div id="memberContent" class="hidden">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="chapterVideoList">
-                    <!-- 동적으로 1~23챕터 모두 생성 -->
-                </div>
-                <div class="mt-8 text-center text-stone-400 text-sm">※ 총 23개 챕터의 모든 강의 영상은 로그인 후 시청 가능합니다.</div>
+                <div id="userGradeBadge" class="mb-4 text-right"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="chapterVideoList"></div>
+                <div class="mt-8 text-center text-stone-400 text-sm">※ 총 23개 챕터의 강의 영상은 로그인 후 시청 가능합니다. 다이아몬드 회원은 PPT 자료도 다운로드 가능합니다.</div>
             </div>
         </section>
 
-        <!-- 회원가입 & 로그인 모달 -->
+        <!-- 모달 -->
         <div id="authModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-all">
             <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
                 <button id="closeModal" class="absolute top-4 right-4 text-stone-400 hover:text-stone-800"><iconify-icon icon="solar:close-circle-bold" width="24"></iconify-icon></button>
@@ -131,18 +105,21 @@
                     <button id="tabLogin" class="pb-2 flex-1 text-center font-medium tab-active">로그인</button>
                     <button id="tabRegister" class="pb-2 flex-1 text-center text-stone-500">회원가입</button>
                 </div>
-                <!-- 로그인 폼 -->
                 <div id="loginForm">
                     <input type="email" id="loginEmail" placeholder="이메일" class="mb-3">
                     <input type="password" id="loginPassword" placeholder="비밀번호" class="mb-4">
                     <button id="doLogin" class="w-full bg-stone-900 text-white py-2 rounded-full">로그인</button>
                     <p class="text-xs text-center text-stone-400 mt-3">관리자: one@naver.com / pass1234</p>
                 </div>
-                <!-- 회원가입 폼 -->
                 <div id="registerForm" class="hidden">
                     <input type="text" id="regName" placeholder="이름" class="mb-2">
+                    <input type="tel" id="regPhone" placeholder="휴대폰 번호 (예: 010-1234-5678)" class="mb-2">
                     <input type="email" id="regEmail" placeholder="이메일" class="mb-2">
-                    <input type="password" id="regPw" placeholder="비밀번호" class="mb-4">
+                    <input type="password" id="regPw" placeholder="비밀번호" class="mb-2">
+                    <select id="regGrade" class="mb-4">
+                        <option value="gold">🥇 골드 (영상 강의만)</option>
+                        <option value="diamond">💎 다이아몬드 (영상 + PPT 자료)</option>
+                    </select>
                     <button id="doRegister" class="w-full bg-amber-800 text-white py-2 rounded-full">회원가입 요청</button>
                     <p class="text-xs text-center text-stone-400 mt-2">※ 가입 후 관리자 승인이 필요합니다.</p>
                 </div>
@@ -152,13 +129,31 @@
         <!-- 관리자 패널 -->
         <div id="adminPanel" class="mt-12 pt-8 border-t border-stone-200 hidden">
             <h3 class="text-xl font-bold">🔧 관리자 대시보드</h3>
-            <p class="text-stone-500 mb-3">회원 승인 관리</p>
-            <div class="bg-stone-50 rounded-xl p-4">
-                <div class="font-mono text-sm mb-2">📋 회원 가입 요청 목록</div>
+            <div class="bg-stone-50 rounded-xl p-4 mt-3">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="font-mono text-sm font-bold">📋 회원 가입 요청 목록</div>
+                    <button id="exportExcelBtn" class="bg-green-600 text-white px-4 py-2 rounded-full text-sm flex items-center gap-2">📎 엑셀 다운로드</button>
+                </div>
                 <div id="pendingUserList" class="mt-2 text-sm space-y-2"></div>
-                <div class="font-mono text-sm mt-6 mb-2">✅ 승인된 회원 목록</div>
+                <div class="font-mono text-sm mt-6 mb-2 font-bold">✅ 승인된 회원 목록</div>
                 <div id="approvedUserList" class="mt-2 text-sm space-y-1"></div>
-                <div class="mt-4"><button id="clearAllUsers" class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">모든 회원 초기화 (관리자만 유지)</button></div>
+                
+                <!-- PPT 업로드 섹션 -->
+                <div class="mt-8 pt-6 border-t border-stone-300">
+                    <h4 class="font-bold text-md mb-3">📎 챕터별 PPT 자료 업로드 (다이아몬드 전용)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <select id="pptChapterSelect" class="text-sm">
+                                <option value="">-- 챕터 선택 --</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="file" id="pptFileInput" accept=".pdf,.pptx,.ppt" class="text-sm">
+                            <button id="uploadPptBtn" class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm">업로드</button>
+                        </div>
+                    </div>
+                    <div id="pptList" class="mt-4 space-y-1 text-sm"></div>
+                </div>
             </div>
         </div>
     </main>
@@ -166,9 +161,7 @@
     <footer class="bg-stone-50 border-t border-stone-100 py-12 mt-16">
         <div class="max-w-7xl mx-auto px-5 md:px-8 text-center text-stone-500 text-sm">
             <p class="font-serif text-xl mb-2">K-Culture EdTech Network</p>
-            <p>《AI로 여는 K-에듀테크》 공식 홈페이지 | KEN 커뮤니티 | 문의: ken@kedutech.kr</p>
-            <div class="flex justify-center gap-6 mt-4"><span>📘 Instagram</span><span>🎬 YouTube</span><span>💬 카카오톡 오픈채팅</span></div>
-            <p class="text-xs mt-5">© 2026 K-EdTech Project. 모든 콘텐츠는 교육 목적으로 제공됩니다.</p>
+            <p>© 2026 K-EdTech Project. 모든 콘텐츠는 교육 목적으로 제공됩니다.</p>
         </div>
     </footer>
 
@@ -200,36 +193,22 @@
             { num: 23, title: "패들렛을 활용한 영어 교육", vol: 3, videoFile: "W23.mp4" }
         ];
 
-        // GitHub video base URL
         const VIDEO_BASE_URL = "https://raw.githubusercontent.com/THEBESTYS/KCE/main/video/";
-
-        // ====================== 회원 관리 시스템 ======================
-        let currentUser = null;
-        let users = JSON.parse(localStorage.getItem('ken_users')) || [];
-        
-        // 초기 관리자 설정 (one@naver.com / pass1234)
         const ADMIN_EMAIL = "one@naver.com";
         const ADMIN_PASSWORD = "pass1234";
-        
-        // 관리자 계정 확인 및 설정
-        const existingAdmin = users.find(u => u.email === ADMIN_EMAIL);
-        if(!existingAdmin) {
-            users.push({ 
-                name: '관리자', 
-                email: ADMIN_EMAIL, 
-                password: ADMIN_PASSWORD, 
-                role: 'admin', 
-                status: 'approved' 
-            });
-            localStorage.setItem('ken_users', JSON.stringify(users));
-        } else if(existingAdmin.role !== 'admin') {
-            // 기존에 같은 이메일이 있지만 admin이 아닌 경우 업데이트
-            existingAdmin.role = 'admin';
-            existingAdmin.status = 'approved';
+
+        // 저장소 초기화
+        let users = JSON.parse(localStorage.getItem('ken_users')) || [];
+        let pptFiles = JSON.parse(localStorage.getItem('ken_ppts')) || {};
+
+        if(!users.find(u => u.email === ADMIN_EMAIL)) {
+            users.push({ name: '관리자', email: ADMIN_EMAIL, password: ADMIN_PASSWORD, phone: '010-0000-0000', grade: 'diamond', role: 'admin', status: 'approved' });
             localStorage.setItem('ken_users', JSON.stringify(users));
         }
 
-        // UI 요소
+        let currentUser = null;
+
+        // DOM elements
         const guestMsgDiv = document.getElementById('guestMessage');
         const memberContent = document.getElementById('memberContent');
         const loginStatusBadge = document.getElementById('loginStatusBadge');
@@ -239,159 +218,98 @@
         const adminPanelDiv = document.getElementById('adminPanel');
         const chapterOverviewDiv = document.getElementById('chapterOverview');
         const chapterVideoListDiv = document.getElementById('chapterVideoList');
+        const userGradeBadge = document.getElementById('userGradeBadge');
 
-        // 챕터 개요 렌더링
         function renderChapterOverview() {
-            const vol1Chapters = chapters.filter(c => c.vol === 1);
-            const vol2Chapters = chapters.filter(c => c.vol === 2);
-            const vol3Chapters = chapters.filter(c => c.vol === 3);
-            
-            const volData = [
-                { vol: 1, chapters: vol1Chapters, title: "에듀테크 기초 & 생성형 AI", desc: "교육 4.0, 프롬프트 엔지니어링, K-문화 콘텐츠 생성 기초" },
-                { vol: 2, chapters: vol2Chapters, title: "고도화 & 데이터 분석", desc: "학습자 데이터, Kirkpatrick 모델, AI 예측, GitHub 포트폴리오" },
-                { vol: 3, chapters: vol3Chapters, title: "한국어 교육 & 글로벌 전략", desc: "AI 음성/발음, 패들렛 마스터, 글로벌 진출, 영어교육 비교" }
-            ];
-            
-            chapterOverviewDiv.innerHTML = volData.map(vol => `
-                <div class="bg-white rounded-xl border border-stone-100 p-5 chapter-card shadow-sm">
-                    <div class="text-amber-700 font-bold text-sm">Vol.${vol.vol} · Chapter ${vol.chapters[0].num}-${vol.chapters[vol.chapters.length-1].num}</div>
-                    <h3 class="text-xl font-semibold mt-1">${vol.title}</h3>
-                    <p class="text-stone-500 text-sm mt-2">${vol.desc}</p>
-                    <div class="mt-3 flex gap-3 text-xs text-stone-400">
-                        <span>📹 영상 ${vol.chapters.filter(c=>c.videoFile).length}개</span>
-                        <span>⏳ 준비중 ${vol.chapters.filter(c=>!c.videoFile).length}개</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // 1~23챕터 전부 표시
-        function renderVideoList() {
-            if(!chapterVideoListDiv) return;
-            
-            chapterVideoListDiv.innerHTML = chapters.map(ch => {
-                const hasVideo = ch.videoFile !== null;
-                const videoUrl = hasVideo ? `${VIDEO_BASE_URL}${ch.videoFile}` : null;
-                
-                const videoHtml = hasVideo 
-                    ? `<a href="${videoUrl}" target="_blank" class="video-link flex items-center gap-2 mt-3 p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
-                        <iconify-icon icon="solar:play-circle-bold" width="28" class="text-amber-700"></iconify-icon>
-                        <div>
-                            <span class="font-medium text-amber-800">강의 영상 시청하기</span>
-                            <p class="text-xs text-stone-500">${ch.videoFile}</p>
-                        </div>
-                       </a>`
-                    : `<div class="flex items-center gap-2 mt-3 p-3 bg-stone-50 rounded-lg border border-stone-200">
-                        <iconify-icon icon="solar:clock-circle-bold" width="28" class="text-stone-400"></iconify-icon>
-                        <div>
-                            <span class="font-medium text-stone-500">강의 영상 준비 중</span>
-                            <p class="text-xs text-stone-400">W${ch.num}.mp4 (추후 업로드 예정)</p>
-                        </div>
-                       </div>`;
-                
-                return `
-                    <div class="border rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition chapter-card">
-                        <div class="bg-stone-50 px-5 py-3 border-b">
-                            <div class="flex justify-between items-center">
-                                <span class="font-bold text-lg">Chapter ${ch.num}</span>
-                                <span class="text-xs ${hasVideo ? 'text-amber-700 bg-amber-50 px-2 py-1 rounded-full' : 'text-stone-400 bg-stone-100 px-2 py-1 rounded-full'}">${hasVideo ? '🎥 영상 있음' : '⏳ 준비 중'}</span>
-                            </div>
-                            <h3 class="font-semibold text-stone-800 mt-1">${ch.title}</h3>
-                        </div>
-                        <div class="p-4">
-                            ${videoHtml}
-                        </div>
-                    </div>
-                `;
+            const vols = [[1, "에듀테크 기초 & 생성형 AI"], [2, "고도화 & 데이터 분석"], [3, "한국어 교육 & 글로벌 전략"]];
+            chapterOverviewDiv.innerHTML = vols.map(([vol, title]) => {
+                const chs = chapters.filter(c => c.vol === vol);
+                return `<div class="bg-white rounded-xl border border-stone-100 p-5 chapter-card shadow-sm">
+                    <div class="text-amber-700 font-bold text-sm">Vol.${vol} · Chapter ${chs[0].num}-${chs[chs.length-1].num}</div>
+                    <h3 class="text-xl font-semibold mt-1">${title}</h3>
+                    <p class="text-stone-500 text-sm mt-2">영상 ${chs.filter(c=>c.videoFile).length}개 | 준비중 ${chs.filter(c=>!c.videoFile).length}개</p>
+                </div>`;
             }).join('');
         }
 
-        // 관리자: 회원 목록 렌더링
+        function renderVideoList() {
+            if(!chapterVideoListDiv) return;
+            const isDiamond = currentUser?.grade === 'diamond';
+            chapterVideoListDiv.innerHTML = chapters.map(ch => {
+                const hasVideo = ch.videoFile !== null;
+                const videoUrl = hasVideo ? `${VIDEO_BASE_URL}${ch.videoFile}` : null;
+                const pptFile = pptFiles[ch.num];
+                const videoHtml = hasVideo ? `
+                    <video src="${videoUrl}" controls autoplay muted style="width:100%; border-radius:12px; margin-top:8px;"></video>
+                ` : `<div class="mt-3 p-3 bg-stone-100 rounded-lg text-center text-stone-500">⏳ 영상 준비 중 (W${ch.num}.mp4)</div>`;
+                
+                const pptHtml = (pptFile && isDiamond) ? `
+                    <a href="${pptFile.url}" download class="ppt-download mt-2 inline-flex items-center gap-1">
+                        <iconify-icon icon="solar:document-bold" width="16"></iconify-icon> ${pptFile.name}
+                    </a>
+                ` : (pptFile && !isDiamond) ? `
+                    <div class="text-xs text-stone-400 mt-2 flex items-center gap-1">
+                        <iconify-icon icon="solar:lock-password-bold" width="14"></iconify-icon> PPT 자료는 다이아몬드 회원 전용입니다
+                    </div>
+                ` : '';
+                
+                return `<div class="border rounded-xl overflow-hidden bg-white shadow-sm">
+                    <div class="bg-stone-50 px-5 py-3 border-b">
+                        <div class="flex justify-between items-center"><span class="font-bold">Chapter ${ch.num}</span><span class="text-xs ${hasVideo ? 'text-amber-700' : 'text-stone-400'}">${hasVideo ? '🎥 영상' : '⏳ 준비중'}</span></div>
+                        <h3 class="font-semibold text-stone-800">${ch.title}</h3>
+                    </div>
+                    <div class="p-4">
+                        ${videoHtml}
+                        ${pptHtml}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
         function renderUserLists() {
             const pendingListDiv = document.getElementById('pendingUserList');
             const approvedListDiv = document.getElementById('approvedUserList');
-            if(!pendingListDiv || !approvedListDiv) return;
-            
-            const pendingUsers = users.filter(u => u.role !== 'admin' && u.status === 'pending');
-            const approvedUsers = users.filter(u => u.role !== 'admin' && u.status === 'approved');
-            
-            pendingListDiv.innerHTML = pendingUsers.length === 0 
-                ? '<div class="text-stone-400 text-sm">대기 중인 회원이 없습니다.</div>'
-                : pendingUsers.map(u => `
-                    <div class="flex justify-between items-center bg-white p-2 rounded-lg border">
-                        <div><span class="font-medium">${u.name}</span> (${u.email})</div>
-                        <div>
-                            <button class="approve-btn" data-email="${u.email}">승인</button>
-                            <button class="reject-btn" data-email="${u.email}">거절</button>
-                        </div>
-                    </div>
-                `).join('');
-            
-            approvedListDiv.innerHTML = approvedUsers.length === 0
-                ? '<div class="text-stone-400 text-sm">승인된 일반 회원이 없습니다.</div>'
-                : approvedUsers.map(u => `<li class="flex items-center gap-2">✅ ${u.name} (${u.email})</li>`).join('');
-            
-            document.querySelectorAll('.approve-btn').forEach(btn => {
-                btn.addEventListener('click', () => approveUser(btn.dataset.email));
-            });
-            document.querySelectorAll('.reject-btn').forEach(btn => {
-                btn.addEventListener('click', () => rejectUser(btn.dataset.email));
-            });
-        }
-        
-        function approveUser(email) {
-            const user = users.find(u => u.email === email);
-            if(user) {
-                user.status = 'approved';
-                localStorage.setItem('ken_users', JSON.stringify(users));
-                renderUserLists();
-                alert(`${email} 회원이 승인되었습니다.`);
-            }
-        }
-        
-        function rejectUser(email) {
-            users = users.filter(u => u.email !== email);
-            localStorage.setItem('ken_users', JSON.stringify(users));
-            renderUserLists();
-            alert(`회원 탈퇴 처리되었습니다.`);
+            const pending = users.filter(u => u.role !== 'admin' && u.status === 'pending');
+            const approved = users.filter(u => u.role !== 'admin' && u.status === 'approved');
+            pendingListDiv.innerHTML = pending.length === 0 ? '<div class="text-stone-400">대기 없음</div>' : pending.map(u => `
+                <div class="flex justify-between items-center bg-white p-2 rounded-lg border">
+                    <div><span class="font-medium">${u.name}</span> (${u.email}) | ${u.phone} | <span class="${u.grade === 'gold' ? 'grade-gold' : 'grade-diamond'}">${u.grade === 'gold' ? '🥇 골드' : '💎 다이아몬드'}</span></div>
+                    <div><button class="approve-btn" data-email="${u.email}">승인</button><button class="reject-btn" data-email="${u.email}">거절</button></div>
+                </div>`).join('');
+            approvedListDiv.innerHTML = approved.length === 0 ? '<div class="text-stone-400">승인된 회원 없음</div>' : approved.map(u => `<li class="flex items-center gap-2">✅ ${u.name} (${u.email}) | ${u.phone} | ${u.grade === 'gold' ? '🥇 골드' : '💎 다이아몬드'}</li>`).join('');
+            document.querySelectorAll('.approve-btn').forEach(btn => btn.addEventListener('click', () => approveUser(btn.dataset.email)));
+            document.querySelectorAll('.reject-btn').forEach(btn => btn.addEventListener('click', () => rejectUser(btn.dataset.email)));
         }
 
-        // UI 업데이트
+        function approveUser(email) {
+            const user = users.find(u => u.email === email);
+            if(user) { user.status = 'approved'; localStorage.setItem('ken_users', JSON.stringify(users)); renderUserLists(); alert('승인 완료'); }
+        }
+        function rejectUser(email) { users = users.filter(u => u.email !== email); localStorage.setItem('ken_users', JSON.stringify(users)); renderUserLists(); alert('거절됨'); }
+
+        function exportToExcel() {
+            const approved = users.filter(u => u.role !== 'admin' && u.status === 'approved').map(u => ({ 이름: u.name, '휴대폰': u.phone, 이메일: u.email, 등급: u.grade === 'gold' ? '골드' : '다이아몬드' }));
+            const ws = XLSX.utils.json_to_sheet(approved);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, '회원목록');
+            XLSX.writeFile(wb, `KEN_회원목록_${new Date().toISOString().slice(0,19)}.xlsx`);
+        }
+
         function updateUI() {
-            const storedUser = localStorage.getItem('ken_current_user');
-            console.log('Stored user:', storedUser); // 디버깅용
-            
-            if(storedUser) {
-                currentUser = JSON.parse(storedUser);
-                console.log('Current user role:', currentUser.role); // 디버깅용
-                
+            const stored = localStorage.getItem('ken_current_user');
+            if(stored) {
+                currentUser = JSON.parse(stored);
                 const dbUser = users.find(u => u.email === currentUser.email);
-                if(!dbUser || (dbUser.status !== 'approved' && dbUser.role !== 'admin')) {
-                    logout();
-                    alert('관리자가 아직 회원가입을 승인하지 않았습니다.');
-                    return;
-                }
-                
-                // currentUser에 role이 없으면 dbUser에서 가져오기
-                if(!currentUser.role && dbUser) {
-                    currentUser.role = dbUser.role;
-                    localStorage.setItem('ken_current_user', JSON.stringify(currentUser));
-                }
-                
+                if(!dbUser || (dbUser.status !== 'approved' && dbUser.role !== 'admin')) { logout(); alert('승인 필요'); return; }
+                currentUser = { ...currentUser, grade: dbUser.grade, phone: dbUser.phone };
                 guestMsgDiv.classList.add('hidden');
                 memberContent.classList.remove('hidden');
-                loginStatusBadge.innerHTML = `👤 ${currentUser.name}님 환영합니다`;
+                loginStatusBadge.innerHTML = `👤 ${currentUser.name}님 (${currentUser.grade === 'gold' ? '🥇 골드' : '💎 다이아몬드'})`;
+                userGradeBadge.innerHTML = currentUser.grade === 'gold' ? '<span class="grade-gold">🥇 골드 회원 (영상 시청 가능)</span>' : '<span class="grade-diamond">💎 다이아몬드 회원 (영상 + PPT 자료)</span>';
                 loginBtn.innerText = '로그아웃';
                 renderVideoList();
-                
-                // 관리자 버튼 표시 조건: role이 admin인 경우
-                if(currentUser.role === 'admin') {
-                    adminToggle.classList.remove('hidden');
-                    console.log('Admin button should be visible'); // 디버깅용
-                } else {
-                    adminToggle.classList.add('hidden');
-                    adminPanelDiv.classList.add('hidden');
-                }
+                if(currentUser.role === 'admin') adminToggle.classList.remove('hidden');
+                else { adminToggle.classList.add('hidden'); adminPanelDiv.classList.add('hidden'); }
             } else {
                 currentUser = null;
                 guestMsgDiv.classList.remove('hidden');
@@ -403,115 +321,81 @@
             }
         }
 
-        function saveCurrentUser(user) {
-            localStorage.setItem('ken_current_user', JSON.stringify(user));
-            updateUI();
-        }
-        
-        function logout() {
-            localStorage.removeItem('ken_current_user');
-            updateUI();
-        }
+        function saveCurrentUser(user) { localStorage.setItem('ken_current_user', JSON.stringify(user)); updateUI(); }
+        function logout() { localStorage.removeItem('ken_current_user'); updateUI(); }
 
-        // 로그인 처리
         document.getElementById('doLogin')?.addEventListener('click', () => {
             const email = document.getElementById('loginEmail').value;
             const pw = document.getElementById('loginPassword').value;
             const found = users.find(u => u.email === email && u.password === pw);
-            
             if(found) {
-                if(found.status !== 'approved' && found.role !== 'admin') {
-                    alert('관리자가 승인하지 않은 회원입니다. 관리자에게 문의하세요.');
-                    return;
-                }
-                // role 정보를 명확히 저장
-                const userToSave = { 
-                    name: found.name, 
-                    email: found.email, 
-                    role: found.role,
-                    status: found.status
-                };
-                saveCurrentUser(userToSave);
+                if(found.status !== 'approved' && found.role !== 'admin') { alert('승인 대기 중'); return; }
+                saveCurrentUser({ name: found.name, email: found.email, role: found.role, grade: found.grade });
                 authModal.classList.add('hidden');
-                // 입력창 초기화
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
-            } else {
-                alert('이메일/비밀번호가 일치하지 않습니다.');
-            }
+            } else alert('정보 불일치');
         });
-        
-        // 회원가입 요청
+
         document.getElementById('doRegister')?.addEventListener('click', () => {
             const name = document.getElementById('regName').value;
+            const phone = document.getElementById('regPhone').value;
             const email = document.getElementById('regEmail').value;
             const pw = document.getElementById('regPw').value;
-            if(!name || !email || !pw) return alert('모두 입력해주세요');
-            if(users.find(u=>u.email === email)) return alert('이미 존재하는 이메일입니다.');
-            const newUser = { name, email, password: pw, role: 'member', status: 'pending' };
-            users.push(newUser);
+            const grade = document.getElementById('regGrade').value;
+            if(!name || !phone || !email || !pw) return alert('모두 입력하세요');
+            if(users.find(u=>u.email === email)) return alert('이메일 중복');
+            users.push({ name, phone, email, password: pw, grade, role: 'member', status: 'pending' });
             localStorage.setItem('ken_users', JSON.stringify(users));
-            alert('회원가입 요청이 완료되었습니다. 관리자 승인 후 이용 가능합니다.');
+            alert('가입 요청 완료 (관리자 승인 필요)');
             document.getElementById('tabLogin').click();
-            document.getElementById('regName').value = '';
-            document.getElementById('regEmail').value = '';
-            document.getElementById('regPw').value = '';
         });
-        
-        // 탭 전환
-        const loginFormDiv = document.getElementById('loginForm');
-        const registerFormDiv = document.getElementById('registerForm');
-        const tabLogin = document.getElementById('tabLogin');
-        const tabRegister = document.getElementById('tabRegister');
-        if(tabLogin && tabRegister) {
-            tabLogin.onclick = () => { loginFormDiv.classList.remove('hidden'); registerFormDiv.classList.add('hidden'); tabLogin.classList.add('tab-active'); tabRegister.classList.remove('tab-active'); };
-            tabRegister.onclick = () => { loginFormDiv.classList.add('hidden'); registerFormDiv.classList.remove('hidden'); tabRegister.classList.add('tab-active'); tabLogin.classList.remove('tab-active'); };
+
+        // PPT 업로드
+        function updatePptSelect() {
+            const select = document.getElementById('pptChapterSelect');
+            if(select) select.innerHTML = '<option value="">-- 챕터 선택 --</option>' + chapters.map(ch => `<option value="${ch.num}">Chapter ${ch.num}: ${ch.title.substring(0,40)}</option>`).join('');
+        }
+        function renderPptList() {
+            const container = document.getElementById('pptList');
+            if(container) container.innerHTML = Object.entries(pptFiles).map(([ch, data]) => `<div class="flex justify-between items-center bg-white p-2 rounded border"><span>📘 Chapter ${ch}: ${data.name}</span><button class="del-ppt text-red-500 text-xs" data-ch="${ch}">🗑 삭제</button></div>`).join('');
+            document.querySelectorAll('.del-ppt').forEach(btn => btn.addEventListener('click', () => { delete pptFiles[btn.dataset.ch]; localStorage.setItem('ken_ppts', JSON.stringify(pptFiles)); renderPptList(); alert('삭제됨'); }));
         }
 
-        loginBtn.onclick = () => {
-            if(currentUser) logout();
-            else authModal.classList.remove('hidden');
-        };
-        document.getElementById('closeModal')?.addEventListener('click', () => authModal.classList.add('hidden'));
-        document.getElementById('openRegisterBtn')?.addEventListener('click', () => { authModal.classList.remove('hidden'); if(tabRegister) tabRegister.click(); });
-
-        // 관리자 토글 (관리자 버튼 클릭 시)
-        let adminVisible = false;
-        adminToggle.onclick = () => {
-            console.log('Admin toggle clicked, currentUser:', currentUser); // 디버깅용
-            console.log('Current user role:', currentUser?.role); // 디버깅용
-            
-            if(!currentUser) {
-                alert('로그인이 필요합니다.');
-                return;
-            }
-            
-            if(currentUser.role !== 'admin') {
-                alert('관리자만 접근 가능합니다.');
-                return;
-            }
-            
-            adminVisible = !adminVisible;
-            if(adminVisible) {
-                adminPanelDiv.classList.remove('hidden');
-                renderUserLists();
-            } else {
-                adminPanelDiv.classList.add('hidden');
-            }
-        };
-        
-        document.getElementById('clearAllUsers')?.addEventListener('click', () => {
-            if(confirm('모든 일반 회원을 초기화하고 관리자만 유지하시겠습니까?')) {
-                const adminUser = users.find(u => u.email === ADMIN_EMAIL);
-                users = adminUser ? [{ ...adminUser, status: 'approved' }] : [];
-                localStorage.setItem('ken_users', JSON.stringify(users));
-                if(currentUser && currentUser.email !== ADMIN_EMAIL) logout();
-                renderUserLists();
-                alert('초기화 완료');
-            }
+        document.getElementById('uploadPptBtn')?.addEventListener('click', () => {
+            const ch = document.getElementById('pptChapterSelect').value;
+            const file = document.getElementById('pptFileInput').files[0];
+            if(!ch || !file) { alert('챕터와 파일 선택'); return; }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                pptFiles[ch] = { name: file.name, url: e.target.result };
+                localStorage.setItem('ken_ppts', JSON.stringify(pptFiles));
+                renderPptList();
+                if(currentUser && currentUser.role === 'admin') renderVideoList();
+                alert('업로드 완료');
+            };
+            reader.readAsDataURL(file);
         });
 
-        // 초기 렌더링
+        // 탭/모달 이벤트
+        const loginFormDiv = document.getElementById('loginForm'), registerFormDiv = document.getElementById('registerForm');
+        const tabLogin = document.getElementById('tabLogin'), tabRegister = document.getElementById('tabRegister');
+        tabLogin.onclick = () => { loginFormDiv.classList.remove('hidden'); registerFormDiv.classList.add('hidden'); tabLogin.classList.add('tab-active'); tabRegister.classList.remove('tab-active'); };
+        tabRegister.onclick = () => { loginFormDiv.classList.add('hidden'); registerFormDiv.classList.remove('hidden'); tabRegister.classList.add('tab-active'); tabLogin.classList.remove('tab-active'); };
+        loginBtn.onclick = () => { if(currentUser) logout(); else authModal.classList.remove('hidden'); };
+        document.getElementById('closeModal').onclick = () => authModal.classList.add('hidden');
+        document.getElementById('openRegisterBtn').onclick = () => { authModal.classList.remove('hidden'); tabRegister.click(); };
+        document.getElementById('exportExcelBtn')?.addEventListener('click', exportToExcel);
+        
+        let adminVisible = false;
+        adminToggle.onclick = () => {
+            if(!currentUser || currentUser.role !== 'admin') { alert('관리자 전용'); return; }
+            adminVisible = !adminVisible;
+            if(adminVisible) { adminPanelDiv.classList.remove('hidden'); renderUserLists(); updatePptSelect(); renderPptList(); }
+            else adminPanelDiv.classList.add('hidden');
+        };
+        document.getElementById('clearAllUsers')?.addEventListener('click', () => {
+            if(confirm('초기화?')) { const admin = users.find(u => u.email === ADMIN_EMAIL); users = admin ? [admin] : []; localStorage.setItem('ken_users', JSON.stringify(users)); if(currentUser?.email !== ADMIN_EMAIL) logout(); renderUserLists(); alert('완료'); }
+        });
+
         renderChapterOverview();
         updateUI();
     </script>
