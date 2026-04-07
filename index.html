@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>KEN | K-Culture EdTech Network</title>
-    <!-- Google Fonts & Tailwind -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
@@ -13,26 +12,20 @@
         body { font-family: 'Inter', sans-serif; background-color: #fefcf8; color: #1a1a1a; scroll-behavior: smooth; }
         .font-serif { font-family: 'Playfair Display', serif; }
         .hero-gradient { background: radial-gradient(circle at 70% 20%, rgba(245, 230, 220, 0.6), #fefcf8); }
-        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0,0,0,0.05); transition: all 0.2s ease; }
         .chapter-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .chapter-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1); }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #b87333; border-radius: 10px; }
-        .admin-only { display: none; }
-        .show-admin .admin-only { display: block; }
-        .btn-primary { background: #b65f2e; transition: all 0.2s; }
-        .btn-primary:hover { background: #8e451f; transform: scale(0.98); }
         input, textarea, select { border: 1px solid #e2e2e0; border-radius: 16px; padding: 10px 16px; width: 100%; font-size: 0.95rem; }
-        input:focus, textarea:focus { outline: none; border-color: #b87333; ring: 2px solid #b8733340; }
+        input:focus, textarea:focus { outline: none; border-color: #b87333; }
         .tab-active { border-bottom: 2px solid #b87333; color: #b87333; font-weight: 600; }
         .video-link { color: #b87333; text-decoration: none; transition: all 0.2s; }
         .video-link:hover { text-decoration: underline; color: #8e451f; }
-        .badge-pending { background-color: #fef3c7; color: #b45309; }
-        .badge-approved { background-color: #d1fae5; color: #065f46; }
-        .badge-rejected { background-color: #fee2e2; color: #991b1b; }
         .approve-btn { background-color: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 0 4px; cursor: pointer; }
         .reject-btn { background-color: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 0 4px; cursor: pointer; }
+        .badge-pending { background-color: #fef3c7; color: #b45309; }
+        .badge-approved { background-color: #d1fae5; color: #065f46; }
     </style>
 </head>
 <body class="antialiased">
@@ -63,7 +56,7 @@
                     <span>K-EdTech 공식 커뮤니티</span>
                 </div>
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight text-stone-900 leading-[1.2]">AI로 여는<br><span class="text-amber-700">K-에듀테크</span>의 미래</h1>
-                <p class="text-lg text-stone-500 mt-5 leading-relaxed">《AI로 여는 K-에듀테크》 전 23장의 완벽한 커리큘럼과 함께 글로벌 에듀테크 전문가로 성장하세요. KEN에서 강의자료, 영상, 커뮤니티를 한 곳에.</p>
+                <p class="text-lg text-stone-500 mt-5 leading-relaxed">《AI로 여는 K-에듀테크》 전 23장의 완벽한 커리큘럼과 함께 글로벌 에듀테크 전문가로 성장하세요. KEN에서 강의 영상을 한 곳에.</p>
                 <div class="flex flex-wrap gap-4 mt-8">
                     <button onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'})" class="bg-amber-800 text-white px-6 py-3 rounded-full font-medium shadow-md hover:bg-amber-900 transition">📘 강의 둘러보기</button>
                     <button class="border border-stone-300 bg-white/60 px-6 py-3 rounded-full font-medium hover:bg-stone-100 transition">🎬 유튜브 프리뷰</button>
@@ -105,7 +98,7 @@
             </div>
         </section>
 
-        <!-- Resource Hub: 강의 자료 & 영상 (회원 전용) -->
+        <!-- Resource Hub: 강의 영상 (회원 전용) -->
         <section id="resources" class="mb-20">
             <div class="flex items-center justify-between border-b border-stone-200 pb-3 mb-6">
                 <h2 class="text-3xl font-serif font-medium">📁 강의 자료실 & 미디어</h2>
@@ -115,15 +108,15 @@
             <!-- 비회원 안내 -->
             <div id="guestMessage" class="bg-amber-50/50 rounded-xl p-6 text-center border border-amber-100 mb-8">
                 <iconify-icon icon="solar:lock-password-bold" width="32" class="text-amber-600 mx-auto"></iconify-icon>
-                <p class="mt-2 font-medium">강의 자료(PPT, 이미지, 문서)와 5분 강의 영상은 회원가입 후 열람 가능합니다.</p>
+                <p class="mt-2 font-medium">강의 영상은 회원가입 후 열람 가능합니다.</p>
                 <p class="text-sm text-stone-500 mt-1">※ 관리자 승인 후 이용 가능합니다.</p>
                 <button id="openRegisterBtn" class="mt-3 bg-amber-800 text-white px-5 py-2 rounded-full text-sm">지금 가입하기</button>
             </div>
 
-            <!-- 회원 전용 콘텐츠 -->
+            <!-- 회원 전용 콘텐츠 - 23개 챕터 전부 표시 -->
             <div id="memberContent" class="hidden">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="chapterVideoList">
-                    <!-- 동적으로 생성 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="chapterVideoList">
+                    <!-- 동적으로 1~23챕터 모두 생성 -->
                 </div>
                 <div class="mt-8 text-center text-stone-400 text-sm">※ 총 23개 챕터의 모든 강의 영상은 로그인 후 시청 가능합니다.</div>
             </div>
@@ -180,31 +173,32 @@
     </footer>
 
     <script>
-        // ====================== 챕터 데이터 (목차 파일 기준) ======================
+        // ====================== 23개 챕터 데이터 (목차 파일 기준) ======================
+        // 영상 파일: W8.mp4, W17.mp4 는 없음 (null 처리)
         const chapters = [
-            { num: 1, title: "에듀테크, 새로운 교육의 지평을 열다", vol: 1, hasVideo: true, videoFile: "W1.mp4" },
-            { num: 2, title: "생성형 AI와 교육의 만남", vol: 1, hasVideo: true, videoFile: "W2.mp4" },
-            { num: 3, title: "학습자 이해에서 시작하는 교육 설계", vol: 1, hasVideo: true, videoFile: "W3.mp4" },
-            { num: 4, title: "AI 기반 평가의 시대", vol: 1, hasVideo: true, videoFile: "W4.mp4" },
-            { num: 5, title: "시각적 상상력을 현실로 (AI 이미지 생성)", vol: 1, hasVideo: true, videoFile: "W5.mp4" },
-            { num: 6, title: "움직이는 교육 콘텐츠의 마법 (AI 영상 제작)", vol: 1, hasVideo: true, videoFile: "W6.mp4" },
-            { num: 7, title: "LMS와 AI 도구의 융합", vol: 1, hasVideo: true, videoFile: "W7.mp4" },
-            { num: 8, title: "프로젝트로 완성하는 실전 역량", vol: 1, hasVideo: false, videoFile: null },
-            { num: 9, title: "학습자 행동 데이터 수집 및 분석", vol: 2, hasVideo: true, videoFile: "W9.mp4" },
-            { num: 10, title: "교육 효과성 측정 지표 개발", vol: 2, hasVideo: true, videoFile: "W10.mp4" },
-            { num: 11, title: "AI 예측 모델 이해하기", vol: 2, hasVideo: true, videoFile: "W11.mp4" },
-            { num: 12, title: "종합 프로젝트 -- 모든 기술의 통합", vol: 2, hasVideo: true, videoFile: "W12.mp4" },
-            { num: 13, title: "현장의 목소리로 고도화하기", vol: 2, hasVideo: true, videoFile: "W13.mp4" },
-            { num: 14, title: "글로벌 시장을 향한 K-에듀 전략", vol: 2, hasVideo: true, videoFile: "W14.mp4" },
-            { num: 15, title: "K-Culture EdTech 프로젝트 성과 공유 및 평가", vol: 2, hasVideo: true, videoFile: "W15.mp4" },
-            { num: 16, title: "2026 K-EdTech 5대 핵심 인사이트", vol: 3, hasVideo: true, videoFile: "W16.mp4" },
-            { num: 17, title: "AI와 함께하는 인터랙티브 한국어 수업 여행", vol: 3, hasVideo: false, videoFile: null },
-            { num: 18, title: "패들렛(Padlet) 마스터 클래스", vol: 3, hasVideo: true, videoFile: "W18.mp4" },
-            { num: 19, title: "패들렛(Padlet) 마스터 클래스 (고급)", vol: 3, hasVideo: true, videoFile: "W19.mp4" },
-            { num: 20, title: "한국어 수업을 위한 AI 이미지/영상 생성 실전 워크숍", vol: 3, hasVideo: true, videoFile: "W20.mp4" },
-            { num: 21, title: "한국어 수업을 위한 AI 음성 및 발음 코칭 도구 활용", vol: 3, hasVideo: true, videoFile: "W21.mp4" },
-            { num: 22, title: "한국어 수업을 위한 AI 평가와 데이터 분석", vol: 3, hasVideo: true, videoFile: "W22.mp4" },
-            { num: 23, title: "패들렛을 활용한 영어 교육", vol: 3, hasVideo: true, videoFile: "W23.mp4" }
+            { num: 1, title: "에듀테크, 새로운 교육의 지평을 열다", vol: 1, videoFile: "W1.mp4" },
+            { num: 2, title: "생성형 AI와 교육의 만남", vol: 1, videoFile: "W2.mp4" },
+            { num: 3, title: "학습자 이해에서 시작하는 교육 설계", vol: 1, videoFile: "W3.mp4" },
+            { num: 4, title: "AI 기반 평가의 시대", vol: 1, videoFile: "W4.mp4" },
+            { num: 5, title: "시각적 상상력을 현실로 (AI 이미지 생성)", vol: 1, videoFile: "W5.mp4" },
+            { num: 6, title: "움직이는 교육 콘텐츠의 마법 (AI 영상 제작)", vol: 1, videoFile: "W6.mp4" },
+            { num: 7, title: "LMS와 AI 도구의 융합", vol: 1, videoFile: "W7.mp4" },
+            { num: 8, title: "프로젝트로 완성하는 실전 역량", vol: 1, videoFile: null },
+            { num: 9, title: "학습자 행동 데이터 수집 및 분석", vol: 2, videoFile: "W9.mp4" },
+            { num: 10, title: "교육 효과성 측정 지표 개발", vol: 2, videoFile: "W10.mp4" },
+            { num: 11, title: "AI 예측 모델 이해하기", vol: 2, videoFile: "W11.mp4" },
+            { num: 12, title: "종합 프로젝트 -- 모든 기술의 통합", vol: 2, videoFile: "W12.mp4" },
+            { num: 13, title: "현장의 목소리로 고도화하기", vol: 2, videoFile: "W13.mp4" },
+            { num: 14, title: "글로벌 시장을 향한 K-에듀 전략", vol: 2, videoFile: "W14.mp4" },
+            { num: 15, title: "K-Culture EdTech 프로젝트 성과 공유 및 평가", vol: 2, videoFile: "W15.mp4" },
+            { num: 16, title: "2026 K-EdTech 5대 핵심 인사이트", vol: 3, videoFile: "W16.mp4" },
+            { num: 17, title: "AI와 함께하는 인터랙티브 한국어 수업 여행", vol: 3, videoFile: null },
+            { num: 18, title: "패들렛(Padlet) 마스터 클래스", vol: 3, videoFile: "W18.mp4" },
+            { num: 19, title: "패들렛(Padlet) 마스터 클래스 (고급)", vol: 3, videoFile: "W19.mp4" },
+            { num: 20, title: "한국어 수업을 위한 AI 이미지/영상 생성 실전 워크숍", vol: 3, videoFile: "W20.mp4" },
+            { num: 21, title: "한국어 수업을 위한 AI 음성 및 발음 코칭 도구 활용", vol: 3, videoFile: "W21.mp4" },
+            { num: 22, title: "한국어 수업을 위한 AI 평가와 데이터 분석", vol: 3, videoFile: "W22.mp4" },
+            { num: 23, title: "패들렛을 활용한 영어 교육", vol: 3, videoFile: "W23.mp4" }
         ];
 
         // GitHub video base URL (raw 파일 접근용)
@@ -212,11 +206,9 @@
 
         // ====================== 회원 관리 시스템 ======================
         let currentUser = null;
-        
-        // users 구조: { name, email, password, role, status }
         let users = JSON.parse(localStorage.getItem('ken_users')) || [];
         
-        // 초기 관리자 설정 (승인됨)
+        // 초기 관리자 설정
         if(users.length === 0) {
             users.push({ name: '관리자', email: 'demo@ken.com', password: '1234', role: 'admin', status: 'approved' });
             localStorage.setItem('ken_users', JSON.stringify(users));
@@ -233,7 +225,7 @@
         const chapterOverviewDiv = document.getElementById('chapterOverview');
         const chapterVideoListDiv = document.getElementById('chapterVideoList');
 
-        // 챕터 개요 렌더링
+        // 챕터 개요 렌더링 (Vol별 그룹)
         function renderChapterOverview() {
             const vol1Chapters = chapters.filter(c => c.vol === 1);
             const vol2Chapters = chapters.filter(c => c.vol === 2);
@@ -251,44 +243,48 @@
                     <h3 class="text-xl font-semibold mt-1">${vol.title}</h3>
                     <p class="text-stone-500 text-sm mt-2">${vol.desc}</p>
                     <div class="mt-3 flex gap-3 text-xs text-stone-400">
-                        <span>📄 PPT ${vol.chapters.length}개</span>
-                        <span>🎬 영상 ${vol.chapters.filter(c=>c.hasVideo).length}개</span>
+                        <span>📹 영상 ${vol.chapters.filter(c=>c.videoFile).length}개</span>
+                        <span>⏳ 준비중 ${vol.chapters.filter(c=>!c.videoFile).length}개</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        // 강의 영상 목록 렌더링 (회원 전용)
+        // 1~23챕터 전부 표시 (제목 + 강의 영상 매칭)
         function renderVideoList() {
             if(!chapterVideoListDiv) return;
             
             chapterVideoListDiv.innerHTML = chapters.map(ch => {
-                const videoUrl = ch.hasVideo ? `${VIDEO_BASE_URL}${ch.videoFile}` : null;
-                const videoHtml = ch.hasVideo 
-                    ? `<a href="${videoUrl}" target="_blank" class="video-link flex items-center gap-2 mt-2">
-                        <iconify-icon icon="solar:play-circle-bold" width="24"></iconify-icon>
-                        <span>🎬 강의 영상 시청하기 (${ch.videoFile})</span>
+                const hasVideo = ch.videoFile !== null;
+                const videoUrl = hasVideo ? `${VIDEO_BASE_URL}${ch.videoFile}` : null;
+                
+                // 영상 표시 영역
+                const videoHtml = hasVideo 
+                    ? `<a href="${videoUrl}" target="_blank" class="video-link flex items-center gap-2 mt-3 p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
+                        <iconify-icon icon="solar:play-circle-bold" width="28" class="text-amber-700"></iconify-icon>
+                        <div>
+                            <span class="font-medium text-amber-800">강의 영상 시청하기</span>
+                            <p class="text-xs text-stone-500">${ch.videoFile}</p>
+                        </div>
                        </a>`
-                    : `<div class="flex items-center gap-2 mt-2 text-stone-400">
-                        <iconify-icon icon="solar:clock-circle-bold" width="24"></iconify-icon>
-                        <span>📹 강의 영상 준비 중 (W${ch.num}.mp4)</span>
+                    : `<div class="flex items-center gap-2 mt-3 p-3 bg-stone-50 rounded-lg border border-stone-200">
+                        <iconify-icon icon="solar:clock-circle-bold" width="28" class="text-stone-400"></iconify-icon>
+                        <div>
+                            <span class="font-medium text-stone-500">강의 영상 준비 중</span>
+                            <p class="text-xs text-stone-400">W${ch.num}.mp4 (추후 업로드 예정)</p>
+                        </div>
                        </div>`;
                 
                 return `
-                    <div class="border rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition">
-                        <div class="bg-stone-50 px-5 py-3 border-b flex justify-between items-center flex-wrap gap-2">
-                            <span class="font-bold">Chapter ${ch.num}. ${ch.title}</span>
-                            <span class="text-xs ${ch.hasVideo ? 'text-amber-700' : 'text-stone-400'}">${ch.hasVideo ? '🎥 영상 있음' : '⏳ 준비 중'}</span>
+                    <div class="border rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition chapter-card">
+                        <div class="bg-stone-50 px-5 py-3 border-b">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-lg">Chapter ${ch.num}</span>
+                                <span class="text-xs ${hasVideo ? 'text-amber-700 bg-amber-50 px-2 py-1 rounded-full' : 'text-stone-400 bg-stone-100 px-2 py-1 rounded-full'}">${hasVideo ? '🎥 영상 있음' : '⏳ 준비 중'}</span>
+                            </div>
+                            <h3 class="font-semibold text-stone-800 mt-1">${ch.title}</h3>
                         </div>
                         <div class="p-4">
-                            <div class="flex items-center gap-2">
-                                <iconify-icon icon="solar:document-bold" width="20" class="text-stone-500"></iconify-icon>
-                                <span class="text-sm text-stone-600">[PPT] Chapter${ch.num}_${ch.title.substring(0,30)}.pdf (준비중)</span>
-                            </div>
-                            <div class="flex items-center gap-2 mt-2">
-                                <iconify-icon icon="solar:presentation-graph-bold" width="20" class="text-stone-500"></iconify-icon>
-                                <span class="text-sm text-stone-600">[워크북] Chapter${ch.num}_워크북.pdf (준비중)</span>
-                            </div>
                             ${videoHtml}
                         </div>
                     </div>
@@ -319,7 +315,7 @@
             
             approvedListDiv.innerHTML = approvedUsers.length === 0
                 ? '<div class="text-stone-400 text-sm">승인된 일반 회원이 없습니다.</div>'
-                : approvedUsers.map(u => `<li>✅ ${u.name} (${u.email})</li>`).join('');
+                : approvedUsers.map(u => `<li class="flex items-center gap-2">✅ ${u.name} (${u.email})</li>`).join('');
             
             // 승인/거절 버튼 이벤트 연결
             document.querySelectorAll('.approve-btn').forEach(btn => {
@@ -354,7 +350,7 @@
                 currentUser = JSON.parse(storedUser);
                 // 승인 여부 확인
                 const dbUser = users.find(u => u.email === currentUser.email);
-                if(!dbUser || dbUser.status !== 'approved') {
+                if(!dbUser || (dbUser.status !== 'approved' && dbUser.role !== 'admin')) {
                     logout();
                     alert('관리자가 아직 회원가입을 승인하지 않았습니다.');
                     return;
@@ -363,7 +359,7 @@
                 memberContent.classList.remove('hidden');
                 loginStatusBadge.innerHTML = `👤 ${currentUser.name}님 환영합니다`;
                 loginBtn.innerText = '로그아웃';
-                renderVideoList();
+                renderVideoList();  // 23개 챕터 영상 목록 표시
             } else {
                 currentUser = null;
                 guestMsgDiv.classList.remove('hidden');
@@ -374,7 +370,7 @@
                 document.body.classList.remove('show-admin');
             }
             
-            // 관리자 버튼 표시 (admin만)
+            // 관리자 버튼 표시
             if(currentUser && currentUser.email === 'demo@ken.com') {
                 adminToggle.classList.remove('hidden');
             } else {
@@ -410,7 +406,7 @@
             }
         });
         
-        // 회원가입 요청 (승인 대기 상태)
+        // 회원가입 요청
         document.getElementById('doRegister')?.addEventListener('click', () => {
             const name = document.getElementById('regName').value;
             const email = document.getElementById('regEmail').value;
