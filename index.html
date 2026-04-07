@@ -24,8 +24,6 @@
         .video-link:hover { text-decoration: underline; color: #8e451f; }
         .approve-btn { background-color: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 0 4px; cursor: pointer; }
         .reject-btn { background-color: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 0 4px; cursor: pointer; }
-        .badge-pending { background-color: #fef3c7; color: #b45309; }
-        .badge-approved { background-color: #d1fae5; color: #065f46; }
     </style>
 </head>
 <body class="antialiased">
@@ -136,7 +134,7 @@
                     <input type="email" id="loginEmail" placeholder="이메일" class="mb-3">
                     <input type="password" id="loginPassword" placeholder="비밀번호" class="mb-4">
                     <button id="doLogin" class="w-full bg-stone-900 text-white py-2 rounded-full">로그인</button>
-                    <p class="text-xs text-center text-stone-400 mt-3">관리자: demo@ken.com / 1234</p>
+                    <p class="text-xs text-center text-stone-400 mt-3">관리자: one@naver.com / pass1234</p>
                 </div>
                 <!-- 회원가입 폼 -->
                 <div id="registerForm" class="hidden">
@@ -173,8 +171,7 @@
     </footer>
 
     <script>
-        // ====================== 23개 챕터 데이터 (목차 파일 기준) ======================
-        // 영상 파일: W8.mp4, W17.mp4 는 없음 (null 처리)
+        // ====================== 23개 챕터 데이터 ======================
         const chapters = [
             { num: 1, title: "에듀테크, 새로운 교육의 지평을 열다", vol: 1, videoFile: "W1.mp4" },
             { num: 2, title: "생성형 AI와 교육의 만남", vol: 1, videoFile: "W2.mp4" },
@@ -201,17 +198,24 @@
             { num: 23, title: "패들렛을 활용한 영어 교육", vol: 3, videoFile: "W23.mp4" }
         ];
 
-        // GitHub video base URL (raw 파일 접근용)
+        // GitHub video base URL
         const VIDEO_BASE_URL = "https://raw.githubusercontent.com/THEBESTYS/KCE/main/video/";
 
         // ====================== 회원 관리 시스템 ======================
         let currentUser = null;
         let users = JSON.parse(localStorage.getItem('ken_users')) || [];
         
-        // 초기 관리자 설정
+        // 초기 관리자 설정 (one@naver.com / pass1234)
         if(users.length === 0) {
-            users.push({ name: '관리자', email: 'demo@ken.com', password: '1234', role: 'admin', status: 'approved' });
+            users.push({ name: '관리자', email: 'one@naver.com', password: 'pass1234', role: 'admin', status: 'approved' });
             localStorage.setItem('ken_users', JSON.stringify(users));
+        } else {
+            // 기존 데이터에 관리자가 없으면 추가
+            const existingAdmin = users.find(u => u.role === 'admin');
+            if(!existingAdmin) {
+                users.push({ name: '관리자', email: 'one@naver.com', password: 'pass1234', role: 'admin', status: 'approved' });
+                localStorage.setItem('ken_users', JSON.stringify(users));
+            }
         }
 
         // UI 요소
@@ -225,7 +229,7 @@
         const chapterOverviewDiv = document.getElementById('chapterOverview');
         const chapterVideoListDiv = document.getElementById('chapterVideoList');
 
-        // 챕터 개요 렌더링 (Vol별 그룹)
+        // 챕터 개요 렌더링
         function renderChapterOverview() {
             const vol1Chapters = chapters.filter(c => c.vol === 1);
             const vol2Chapters = chapters.filter(c => c.vol === 2);
@@ -250,7 +254,7 @@
             `).join('');
         }
 
-        // 1~23챕터 전부 표시 (제목 + 강의 영상 매칭)
+        // 1~23챕터 전부 표시
         function renderVideoList() {
             if(!chapterVideoListDiv) return;
             
@@ -258,7 +262,6 @@
                 const hasVideo = ch.videoFile !== null;
                 const videoUrl = hasVideo ? `${VIDEO_BASE_URL}${ch.videoFile}` : null;
                 
-                // 영상 표시 영역
                 const videoHtml = hasVideo 
                     ? `<a href="${videoUrl}" target="_blank" class="video-link flex items-center gap-2 mt-3 p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
                         <iconify-icon icon="solar:play-circle-bold" width="28" class="text-amber-700"></iconify-icon>
@@ -317,7 +320,6 @@
                 ? '<div class="text-stone-400 text-sm">승인된 일반 회원이 없습니다.</div>'
                 : approvedUsers.map(u => `<li class="flex items-center gap-2">✅ ${u.name} (${u.email})</li>`).join('');
             
-            // 승인/거절 버튼 이벤트 연결
             document.querySelectorAll('.approve-btn').forEach(btn => {
                 btn.addEventListener('click', () => approveUser(btn.dataset.email));
             });
@@ -343,12 +345,11 @@
             alert(`회원 탈퇴 처리되었습니다.`);
         }
 
-        // UI 업데이트 (로그인 상태에 따라)
+        // UI 업데이트
         function updateUI() {
             const storedUser = localStorage.getItem('ken_current_user');
             if(storedUser) {
                 currentUser = JSON.parse(storedUser);
-                // 승인 여부 확인
                 const dbUser = users.find(u => u.email === currentUser.email);
                 if(!dbUser || (dbUser.status !== 'approved' && dbUser.role !== 'admin')) {
                     logout();
@@ -359,7 +360,7 @@
                 memberContent.classList.remove('hidden');
                 loginStatusBadge.innerHTML = `👤 ${currentUser.name}님 환영합니다`;
                 loginBtn.innerText = '로그아웃';
-                renderVideoList();  // 23개 챕터 영상 목록 표시
+                renderVideoList();
             } else {
                 currentUser = null;
                 guestMsgDiv.classList.remove('hidden');
@@ -367,11 +368,9 @@
                 loginStatusBadge.innerHTML = '🔒 회원전용';
                 loginBtn.innerText = '로그인';
                 adminPanelDiv.classList.add('hidden');
-                document.body.classList.remove('show-admin');
             }
             
-            // 관리자 버튼 표시
-            if(currentUser && currentUser.email === 'demo@ken.com') {
+            if(currentUser && currentUser.email === 'one@naver.com') {
                 adminToggle.classList.remove('hidden');
             } else {
                 adminToggle.classList.add('hidden');
@@ -443,7 +442,7 @@
         // 관리자 토글
         let adminVisible = false;
         adminToggle.onclick = () => {
-            if(currentUser?.email !== 'demo@ken.com') return alert('관리자만 접근 가능');
+            if(currentUser?.email !== 'one@naver.com') return alert('관리자만 접근 가능');
             adminVisible = !adminVisible;
             if(adminVisible) {
                 adminPanelDiv.classList.remove('hidden');
@@ -453,10 +452,10 @@
         
         document.getElementById('clearAllUsers')?.addEventListener('click', () => {
             if(confirm('모든 일반 회원을 초기화하고 관리자만 유지하시겠습니까?')) {
-                const adminUser = users.find(u => u.email === 'demo@ken.com');
+                const adminUser = users.find(u => u.email === 'one@naver.com');
                 users = adminUser ? [{ ...adminUser, status: 'approved' }] : [];
                 localStorage.setItem('ken_users', JSON.stringify(users));
-                if(currentUser && currentUser.email !== 'demo@ken.com') logout();
+                if(currentUser && currentUser.email !== 'one@naver.com') logout();
                 renderUserLists();
                 alert('초기화 완료');
             }
